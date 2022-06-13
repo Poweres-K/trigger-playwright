@@ -30,8 +30,22 @@ jobs:
             ~/.cache/ms-playwright
           key: cache-playwright-linux-1.22.2
 
+      - run: pnpm store path && cd ~ && pwd
+
+      - name: "Cache: node_modules"
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/Cypress
+            ~/.local/share/pnpm/store/v3
+          key: ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ secrets.CACHE_HASH }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ secrets.CACHE_HASH }}-${{ env.cache-name }}-
+            ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ secrets.CACHE_HASH }}-
+
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm -r i --shamefully-hoist --prefer-offline
 
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
