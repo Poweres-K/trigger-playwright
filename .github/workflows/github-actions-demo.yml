@@ -39,10 +39,10 @@ jobs:
             node_modules
             ~/.cache/Cypress
             ~/.local/share/pnpm/store/v3
-          key: ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ secrets.CACHE_HASH }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ secrets.CACHE_HASH }}-${{ env.cache-name }}-
-            ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ secrets.CACHE_HASH }}-
+            ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ env.cache-name }}-
+            ${{ runner.OS }}-x86-node16-pnpm7-e2e-
 
       - name: Install dependencies
         run: pnpm -r i --shamefully-hoist --prefer-offline
