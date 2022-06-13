@@ -31,7 +31,7 @@ jobs:
           key: cache-playwright-linux-1.22.2
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
