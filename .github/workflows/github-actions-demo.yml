@@ -61,6 +61,7 @@ jobs:
       #     retention-days: 30
 
       - uses: actions/upload-artifact@master
+        if: always()
         with:
           name: allure-results
           path: allure-results
