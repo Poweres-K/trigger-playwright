@@ -1,0 +1,12 @@
+name: checkout another repo
+on:
+  pull_request:
+jobs:
+  checkoute2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract branch name
+        run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract-branch
+      - name: show branch name
+        run: echo ${{ steps.extract-branch.outputs.branch}}
