@@ -7,27 +7,23 @@ jobs:
     steps:
       - name: show owner
         run: echo ${GITHUB_REPOSITORY}
+      # - name: Try to retrieve branch from otherrepo
+      #   uses: octokit/request-action@v2.x
+      #   id: get_branch_otherrepo
+      #   with:
+      #     route: GET /repos/Poweres-K/test-playwright/git/ref/${{ github.head_ref }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   continue-on-error: true
       - name: Try to retrieve branch from otherrepo
-        uses: octokit/request-action@v2.x
         id: get_branch_otherrepo
-        with:
-          route: GET /repos/Poweres-K/test-playwright/git/ref/${{ github.head_ref }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
+        run: |
+          curl \ -H "Accept: application/vnd.github.v3+json" \ -H "Authorization: token <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>" \https://api.github.com/user/repos
+
       - name: Determine which otherrepo branch to checkout
         run: |
           if [[ '${{ steps.get_branch_otherrepo.outputs.status }}' = '200' ]]; then
             echo ${{ github.head_ref }}
-          else
-            echo master
-          fi
-      - name: Determine E2E test framework branch to use
-        id: pick_e2e_branch
-        shell: bash
-        run: |
-          if git ls-remote --exit-code --heads https://github.com/Poweres-K/test-playwright ${{github.head_ref}}; then
-            echo test
           else
             echo master
           fi
