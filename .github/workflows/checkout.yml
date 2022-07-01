@@ -22,3 +22,13 @@ jobs:
           else
             echo master
           fi
+      - name: Determine E2E test framework branch to use
+        id: pick_e2e_branch
+        shell: bash
+        run: |
+          BRANCH=${github.head_ref }
+          if git ls-remote --exit-code --heads https://github.com/Poweres-K/test-playwright ${BRANCH}; then
+            echo test
+          else
+            echo master
+          fi
