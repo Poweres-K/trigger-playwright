@@ -23,6 +23,8 @@ jobs:
 
       - name: get branch
         uses: ./.github/actions/check
+        with:
+          TOKEN: ${{secrets.CHECK}}
       - name: show output
         run: echo '${{ steps.get_branch_otherrepo.outputs.branch }}'
       - name: Determine which otherrepo branch to checkout
