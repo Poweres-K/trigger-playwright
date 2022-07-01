@@ -18,7 +18,7 @@ jobs:
       - name: Try to retrieve branch from otherrepo
         id: get_branch_otherrepo
         run: |
-          curl  -H "Authorization: token ${{secrets.CHECK}}" -H  https://api.github.com/repos/Poweres-K/test-playwright/branches/11
+          curl  -H "Authorization: token ${{secrets.CHECK}}" https://api.github.com/repos/Poweres-K/test-playwright/branches/11
       - name: show output
         run: echo '${{ steps.get_branch_otherrepo.outputs }}'
       - name: Determine which otherrepo branch to checkout
