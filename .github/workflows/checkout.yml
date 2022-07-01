@@ -13,7 +13,7 @@ jobs:
         with:
           route: GET /repos/Poweres-K/test-playwright/branches/${{ github.head_ref }}
         env:
-          GITHUB_TOKEN: ${{ secrets.AUTOMATION_TEST_PRIVATE_KEY  }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
       - name: Determine which otherrepo branch to checkout
         run: |
