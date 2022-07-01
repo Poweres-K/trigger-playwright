@@ -9,4 +9,4 @@ jobs:
         run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
         id: extract-branch
       - name: show branch name
-        run: echo ${GITHUB_REF##*/}
+        run: echo ${{ github.head_ref }}
