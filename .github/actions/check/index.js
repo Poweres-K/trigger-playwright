@@ -6,7 +6,11 @@ const run = async () => {
   try {
     const token = core.getInput("TOKEN");
 
-    const octokit = github.getOctokit(token);
+    // const octokit = github.getOctokit(token);
+
+    const octokit = new Octokit({
+      auth: token,
+    });
 
     const response = await octokit.request(
       "GET /repos/{owner}/{repo}/branches/{branch}",
