@@ -18,7 +18,7 @@ jobs:
       - name: Try to retrieve branch from otherrepo
         id: get_branch_otherrepo
         run: |
-          curl \ -H "Accept: application/vnd.github.v3+json" \ -H "Authorization: token <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>" \https://api.github.com/user/repos
+          curl \ -H "Accept: application/vnd.github.v3+json" \ -H "Authorization: token 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" \https://api.github.com/user/repos
 
       - name: Determine which otherrepo branch to checkout
         run: |
