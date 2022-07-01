@@ -21,7 +21,7 @@ jobs:
       #     curl  -H "Authorization: token ${{secrets.CHECK}}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/Poweres-K/test-playwright/branches/${{ github.head_ref }}
 
       - name: get branch
-        uses: ./github/actions/check
+        uses: ./.github/actions/check
       - name: show output
         run: echo '${{ steps.get_branch_otherrepo.outputs.branch }}'
       - name: Determine which otherrepo branch to checkout
