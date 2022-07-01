@@ -26,8 +26,7 @@ jobs:
         id: pick_e2e_branch
         shell: bash
         run: |
-          BRANCH=${github.head_ref }
-          if git ls-remote --exit-code --heads https://github.com/Poweres-K/test-playwright ${BRANCH}; then
+          if git ls-remote --exit-code --heads https://github.com/Poweres-K/test-playwright ${{github.head_ref}}; then
             echo test
           else
             echo master
