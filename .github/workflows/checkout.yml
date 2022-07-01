@@ -24,6 +24,7 @@ jobs:
       - name: get branch
         id: get_branch_otherrepo
         uses: ./.github/actions/check
+        continue-on-error: true
         with:
           TOKEN: ${{secrets.CHECK}}
       - name: show output

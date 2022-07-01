@@ -23,6 +23,7 @@ const run = async () => {
 
     core.setOutput("branch", JSON.stringify(response.data));
   } catch (error) {
+    core.setOutput("branch", "master");
     core.setFailed(error.message);
   }
 };
