@@ -15,12 +15,15 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   continue-on-error: true
-      - name: Try to retrieve branch from otherrepo
-        id: get_branch_otherrepo
-        run: |
-          curl  -H "Authorization: token ${{secrets.CHECK}}" https://api.github.com/repos/Poweres-K/test-playwright/branches/11
+      # - name: Try to retrieve branch from otherrepo
+      #   id: get_branch_otherrepo
+      #   run: |
+      #     curl  -H "Authorization: token ${{secrets.CHECK}}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/Poweres-K/test-playwright/branches/${{ github.head_ref }}
+
+      - name: get branch
+        uses: ./github/actions/check
       - name: show output
-        run: echo '${{ steps.get_branch_otherrepo.outputs.Object }}'
+        run: echo '${{ steps.get_branch_otherrepo.outputs.branch }}'
       - name: Determine which otherrepo branch to checkout
         run: |
           if [[ '${{ steps.get_branch_otherrepo.outputs.status }}' = '200' ]]; then

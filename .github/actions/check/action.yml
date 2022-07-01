@@ -1,0 +1,12 @@
+name: "Check repo"
+description: "Check repo"
+inputs:
+  TOKEN: # id of input
+    description: "token"
+    required: true
+outputs:
+  branch: # id of output
+    description: "give branch"
+runs:
+  using: "node16"
+  main: "dist/index.js"
