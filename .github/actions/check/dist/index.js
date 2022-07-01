@@ -9007,18 +9007,18 @@ const run = async () => {
   try {
     const token = core.getInput("TOKEN");
 
-    // const octokit = github.getOctokit(token);
-
     const octokit = new Octokit({
       auth: token,
     });
+
+    console.log("testtttttttttttt");
 
     const response = await octokit.request(
       "GET /repos/{owner}/{repo}/branches/{branch}",
       {
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
-        branch: "test",
+        branch: "test1",
       }
     );
 
