@@ -7,6 +7,7 @@ jobs:
     steps:
       - name: show owner
         run: echo ${GITHUB_REPOSITORY}
+      - uses: actions/checkout@v3
       # - name: Try to retrieve branch from otherrepo
       #   uses: octokit/request-action@v2.x
       #   id: get_branch_otherrepo
