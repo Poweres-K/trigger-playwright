@@ -20,7 +20,7 @@ jobs:
         run: |
           curl  -H "Authorization: token ${{secrets.CHECK}}" https://api.github.com/repos/Poweres-K/test-playwright/branches/11
       - name: show output
-        run: echo '${{ steps.get_branch_otherrepo.outputs }}'
+        run: echo '${{ steps.get_branch_otherrepo.outputs.Object }}'
       - name: Determine which otherrepo branch to checkout
         run: |
           if [[ '${{ steps.get_branch_otherrepo.outputs.status }}' = '200' ]]; then
