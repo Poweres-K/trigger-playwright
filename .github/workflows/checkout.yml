@@ -5,8 +5,20 @@ jobs:
   checkoute2e:
     runs-on: ubuntu-latest
     steps:
-      - name: Extract branch name
-        run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract-branch
-      - name: show branch name
-        run: echo ${{ github.head_ref }}
+      - name: show owner
+        run: echo ${GITHUB_REPOSITORY}
+      - name: Try to retrieve branch from otherrepo
+        uses: octokit/request-action@v2.x
+        id: get_branch_otherrepo
+        with:
+          route: GET /repos/Poweres-K/test-playwright/branches/${{ github.head_ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.AUTOMATION_TEST_PRIVATE_KEY  }}
+        continue-on-error: true
+      - name: Determine which otherrepo branch to checkout
+        run: |
+          if [[ '${{ steps.get_branch_otherrepo.outputs.status }}' = '200' ]]; then
+            echo ${{ github.head_ref }}
+          else
+            echo master
+          fi
