@@ -80,11 +80,16 @@ jobs:
           name: allure-report
           path: allure-report/
           retention-days: 30
-      - uses: jsmrcaga/action-netlify-deploy@master
-        id: netlify-deploy
+      - name: Deploy to Netlify
+        id: deploy
+        uses: nwtgck/actions-netlify@v1.2
         with:
+          publish-dir: "./allure-report"
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+        env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          build_directory: ./allure-report
-      - name: get url
-        run: echo ${{ steps.netlify-deploy.outputs.NETLIFY_PREVIEW_URL }}
+        timeout-minutes: 1
+      - run: echo  ${{ steps.deploy.outputs.branch }}
