@@ -68,8 +68,8 @@ jobs:
         run: pnpm -r i --shamefully-hoist --prefer-offline
 
       - name: Install Playwright Browsers
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
+        # if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright@1.19.2 install --with-deps
 
       - name: Run Playwright tests
         run: pnpx playwright test
