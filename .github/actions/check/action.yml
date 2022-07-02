@@ -4,6 +4,9 @@ inputs:
   TOKEN: # id of input
     description: "token"
     required: true
+  branch:
+    description: "expect branch"
+    required: true
 outputs:
   branch: # id of output
     description: "give branch"

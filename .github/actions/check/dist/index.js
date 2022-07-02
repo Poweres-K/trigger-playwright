@@ -9006,6 +9006,7 @@ const { Octokit } = __nccwpck_require__(5932);
 const run = async () => {
   try {
     const token = core.getInput("TOKEN");
+    const branch = core.getInput("branch");
 
     const octokit = new Octokit({
       auth: token,
@@ -9016,13 +9017,15 @@ const run = async () => {
       {
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
-        branch: "test1",
+        branch,
       }
     );
-
     console.log(response);
+    if (response) {
+      return core.setOutput("branch", branch);
+    }
 
-    core.setOutput("branch", JSON.stringify(response.data));
+    return core.setOutput("branch", "master");
   } catch (error) {
     core.setOutput("branch", "master");
     core.setFailed(error.message);

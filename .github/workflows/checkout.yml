@@ -27,6 +27,7 @@ jobs:
         continue-on-error: true
         with:
           TOKEN: ${{secrets.CHECK}}
+          branch: ${{ github.head_ref }}
       - name: show output
         run: echo '${{ steps.get_branch_otherrepo.outputs.branch }}'
       - name: Determine which otherrepo branch to checkout
