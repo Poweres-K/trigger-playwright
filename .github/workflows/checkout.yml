@@ -26,7 +26,7 @@ jobs:
         with:
           repository: Poweres-K/test-playwright
           ref: main
-          token: ${{ secrets.AUTOMATION_TEST_PRIVATE_KEY }}
+          token: ${{ secrets.NEW_KEY }}
       - name: list file
         run: ls -a
 
