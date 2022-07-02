@@ -10,8 +10,6 @@ const run = async () => {
       auth: token,
     });
 
-    console.log("testtttttttttttt");
-
     const response = await octokit.request(
       "GET /repos/{owner}/{repo}/branches/{branch}",
       {
@@ -20,6 +18,8 @@ const run = async () => {
         branch: "test1",
       }
     );
+
+    console.log(response);
 
     core.setOutput("branch", JSON.stringify(response.data));
   } catch (error) {
