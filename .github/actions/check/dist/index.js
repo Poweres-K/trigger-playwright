@@ -9011,7 +9011,7 @@ const run = async () => {
     const octokit = new Octokit({
       auth: token,
     });
-
+    console.log(branch);
     const response = await octokit.request(
       "GET /repos/{owner}/{repo}/branches/{branch}",
       {
