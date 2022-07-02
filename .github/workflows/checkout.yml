@@ -1,0 +1,95 @@
+name: checkout another repo
+on:
+  pull_request:
+jobs:
+  select-branch:
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.get_branch_otherrepo.outputs.branch }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: get branch
+        id: get_branch_otherrepo
+        uses: ./.github/actions/check
+        continue-on-error: true
+        with:
+          TOKEN: ${{secrets.CHECK}}
+          branch: ${{ github.head_ref }}
+
+  run-e2e:
+    runs-on: ubuntu-latest
+    needs: [select-branch]
+    steps:
+      - name: show branch
+        run: echo 'checkout bracch ${{ needs.select-branch.outputs.branch }}'
+      - uses: actions/checkout@v3
+        with:
+          repository: Poweres-K/test-playwright
+          ref: ${{ needs.select-branch.outputs.branch }}
+          token: ${{ secrets.NEW_KEY }}
+
+      - name: "Intitialize: Summon NodeJS"
+        uses: actions/setup-node@v3
+        with:
+          node-version: 17
+
+      - uses: pnpm/action-setup@v2.0.1
+        name: "Intitialize: Configure pnpm"
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - name: Cache playwright binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: cache-playwright-linux-1.22.2
+
+      - run: pnpm store path && cd ~ && pwd
+
+      - name: "Cache: node_modules"
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/Cypress
+            ~/.local/share/pnpm/store/v3
+          key: ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ env.cache-name }}-
+            ${{ runner.OS }}-x86-node16-pnpm7-e2e-
+
+      - name: Install dependencies
+        run: pnpm -r i --shamefully-hoist --prefer-offline
+
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpx playwright@1.22.2 install --with-deps
+
+      - name: Run Playwright tests
+        run: pnpm run test:allure
+
+      - name: list file
+        run: ls -a
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: allure-report
+          path: allure-report/
+          retention-days: 30
+      - name: Deploy to Netlify
+        id: deploy
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: "./allure-report"
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1
+      - run: echo  ${{ steps.deploy.outputs.deploy-url }}
