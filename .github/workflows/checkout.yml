@@ -34,48 +34,55 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-
-      - uses: pnpm/action-setup@v2.0.1
-        name: "Intitialize: Configure pnpm"
-        id: pnpm-install
-        with:
-          version: 7
-          run_install: false
-
-      - name: Cache playwright binaries
-        uses: actions/cache@v3
-        id: playwright-cache
-        with:
-          path: |
-            ~/.cache/ms-playwright
-          key: cache-playwright-linux-1.22.2
-
-      - run: pnpm store path && cd ~ && pwd
-
-      - name: "Cache: node_modules"
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            ~/.cache/Cypress
-            ~/.local/share/pnpm/store/v3
-          key: ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ env.cache-name }}-
-            ${{ runner.OS }}-x86-node16-pnpm7-e2e-
-
       - name: Install dependencies
-        run: pnpm -r i --shamefully-hoist --prefer-offline
+        run: npm ci
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+      - name: Run your tests
+        run: npm test
+      - name: Upload test result
 
-      - name: Install Playwright Browsers
-        # if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright@1.19.2 install --with-deps
+      # - uses: pnpm/action-setup@v2.0.1
+      #   name: "Intitialize: Configure pnpm"
+      #   id: pnpm-install
+      #   with:
+      #     version: 7
+      #     run_install: false
 
-      - name: Run Playwright tests
-        run: pnpx playwright test
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+      # - name: Cache playwright binaries
+      #   uses: actions/cache@v3
+      #   id: playwright-cache
+      #   with:
+      #     path: |
+      #       ~/.cache/ms-playwright
+      #     key: cache-playwright-linux-1.22.2
+
+      # - run: pnpm store path && cd ~ && pwd
+
+      # - name: "Cache: node_modules"
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: |
+      #       node_modules
+      #       ~/.cache/Cypress
+      #       ~/.local/share/pnpm/store/v3
+      #     key: ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ hashFiles('**/pnpm-lock.yaml') }}
+      #     restore-keys: |
+      #       ${{ runner.OS }}-x86-node16-pnpm7-e2e-${{ env.cache-name }}-
+      #       ${{ runner.OS }}-x86-node16-pnpm7-e2e-
+
+      # - name: Install dependencies
+      #   run: pnpm -r i --shamefully-hoist --prefer-offline
+
+      # - name: Install Playwright Browsers
+      #   # if: steps.playwright-cache.outputs.cache-hit != 'true'
+      #   run: npx playwright@1.19.2 install --with-deps
+
+      # - name: Run Playwright tests
+      #   run: npx playwright test
+      # - uses: actions/upload-artifact@v2
+      #   if: always()
+      #   with:
+      #     name: playwright-report
+      #     path: playwright-report/
+      #     retention-days: 30
