@@ -27,8 +27,6 @@ jobs:
           repository: Poweres-K/test-playwright
           ref: ${{ needs.select-branch.outputs.branch }}
           token: ${{ secrets.NEW_KEY }}
-      - name: list file
-        run: ls -a
 
       - name: "Intitialize: Summon NodeJS"
         uses: actions/setup-node@v3
@@ -68,11 +66,14 @@ jobs:
         run: pnpm -r i --shamefully-hoist --prefer-offline
 
       - name: Install Playwright Browsers
-        # if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright@1.22.2 install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpx playwright@1.22.2 install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test
+        run: pnpx playwright test
+
+      - name: list file
+        run: ls -a
       - uses: actions/upload-artifact@v2
         if: always()
         with:
