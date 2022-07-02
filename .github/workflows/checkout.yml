@@ -72,8 +72,7 @@ jobs:
         run: pnpx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: pnpm run test:allure
-
+        run: pnpx playwright test
       - uses: actions/upload-artifact@v2
         if: always()
         with:
