@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: Poweres-K/test-playwright
-          ref: ${{ needs.select-branch.outputs.branch }}
+          ref: main
           token: ${{ secrets.AUTOMATION_TEST_PRIVATE_KEY }}
       - name: list file
         run: ls -a
